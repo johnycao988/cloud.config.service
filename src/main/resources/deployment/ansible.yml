@@ -1,0 +1,19 @@
+---
+- hosts: webservers
+  remote_user: jenkins
+  tasks:
+  - name: Fetch App config files...
+    shell: cd /AppConfig && git fetch && git merge origin/master
+ 
+    
+  - name: Stop Cloud Config Server Containers...
+    shell: docker stop cloud.config.server
+
+  - name: Copy Cloud Config server war....
+    copy: src=cloud-config-server.war dest=/tmp
+
+  - name: Copy war to docker containers...
+    shell: docker cp /tmp/cloud-config-server.war cloud.config.server:usr/local/tomcat/webapps 
+
+  - name: Start CS Config Server containers...
+    shell: docker start cloud.config.server
