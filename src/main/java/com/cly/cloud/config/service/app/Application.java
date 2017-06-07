@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController; 
 
 @SpringBootApplication
 @RestController
@@ -23,11 +23,6 @@ public class Application {
 
 	private static final String AUTH_CODE = "CLOUD.CONFIG.SERVICE.AUTH.CODE";
 
-	 
-	@Autowired
-    private Environment env;
-
-    
 	@RequestMapping("/")
 	public String version() {
 		return "Cloud Config Service V1.0, released on June 2017!";
@@ -46,10 +41,7 @@ public class Application {
 
 	private String getAuthCode() {
 
-		String authCode = env.getProperty(AUTH_CODE);
-		
-		if(authCode==null)
-			authCode=System.getProperty(AUTH_CODE, null);
+ 		String authCode=System.getProperty(AUTH_CODE, null);
 
 		if (authCode == null) {
 			logger.warning("Property:[" + AUTH_CODE + "] of Config Service is not set.");
@@ -117,8 +109,7 @@ public class Application {
 		}
 	}
 
-	public static void main(String[] args) {
-
+	public static void main(String[] args) { 
 		SpringApplication.run(Application.class, args);
 
 	}
