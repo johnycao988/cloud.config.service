@@ -12,9 +12,8 @@
     ignore_errors: yes
   
   - name: Copy Cloud config service jar ...
-    copy: src=$WORKSPACE/target/cloud.config.service-1.0.jar dest=/tmp
- 
- 
+    copy: src=cloud.config.service-1.0.jar dest=/tmp
+  
   - name: Build Cloud config service image ...
     shell: docker build -t cloud.config.service /tmp
   

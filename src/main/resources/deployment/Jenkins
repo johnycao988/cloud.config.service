@@ -8,5 +8,5 @@ docker=/var/jenkins_home/tools/org.jenkinsci.plugins.docker.commons.tools.Docker
 $mvn package
 
 cp $WORKSPACE/src/main/resources/deployment/Dockerfile $WORKSPACE/target/
-
-ansible-playbook $WORKSPACE/src/main/resources/deployment/ansible.yml
+cp $WORKSPACE/src/main/resources/deployment/ansible.yml $WORKSPACE/target/
+ansible-playbook $WORKSPACE/target/ansible.yml
