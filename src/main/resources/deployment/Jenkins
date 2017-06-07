@@ -7,40 +7,8 @@ docker=/var/jenkins_home/tools/org.jenkinsci.plugins.docker.commons.tools.Docker
 
 $mvn package
 
-cp $WORKSPACE/src/main/deployment/Dockerfile $WORKSPACE/target/
+cp $WORKSPACE/src/main/resources/deployment/Dockerfile $WORKSPACE/target/
 
 $docker -H 10.39.101.226:2375 build -t 10.39.101.226:5000/cloud.config.service $WORKSPACE/target/
 
-set +e
-
-$docker -H 10.39.101.226:2375 stop cloud-ms-demo1 cloud-ms-demo2 cloud-ms-demo3
-
-$docker -H 10.39.107.124:2375 stop cloud-ms-demo4 cloud-ms-demo5 cloud-ms-demo6
-
-$docker -H 10.39.101.226:2375 rm -f cloud-ms-demo1 cloud-ms-demo2 cloud-ms-demo3
-
-$docker -H 10.39.107.124:2375 rm -f cloud-ms-demo4 cloud-ms-demo5 cloud-ms-demo6
-
-$docker -H 10.39.101.226:2375 rmi -f 10.39.101.226:5000/cloud-ms-demo
-
-set -e
-
-
-
-$docker -H 10.39.101.226:2375 push 10.39.101.226:5000/cloud-ms-demo
-
-$docker -H 10.39.101.226:2375 pull 10.39.101.226:5000/cloud-ms-demo
-
-$docker -H 10.39.107.124:2375 pull 10.39.101.226:5000/cloud-ms-demo
-
-$docker -H 10.39.101.226:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.101.226:8090 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo1 -d -p 8090:8080 10.39.101.226:5000/cloud-ms-demo 
-
-$docker -H 10.39.101.226:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.101.226:8091 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo2 -d -p 8091:8080 10.39.101.226:5000/cloud-ms-demo 
-
-$docker -H 10.39.101.226:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.101.226:8092 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo3 -d -p 8092:8080 10.39.101.226:5000/cloud-ms-demo 
-
-$docker -H 10.39.107.124:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.107.124:8090 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo4 -d -p 8090:8080 10.39.101.226:5000/cloud-ms-demo 
-
-$docker -H 10.39.107.124:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.107.124:8091 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo5 -d -p 8091:8080 10.39.101.226:5000/cloud-ms-demo 
-
-$docker -H 10.39.107.124:2375 run -e CLOUD.MS.EXPOSE.URL=http://10.39.107.124:8092 -e CLOUD.CONFIG.URI=http://10.39.101.226:8888 -e PROFILES.ACTIVE=development -e CLOUD.CONFIG.LABEL=master --name cloud-ms-demo6 -d -p 8092:8080 10.39.101.226:5000/cloud-ms-demo 
+ansible-playbook $WORKSPACE/src/main/resources/deployment/ansible.yml
