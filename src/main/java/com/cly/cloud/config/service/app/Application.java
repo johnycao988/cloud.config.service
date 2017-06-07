@@ -7,8 +7,10 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,10 +20,13 @@ public class Application {
 
 	private static Logger logger = Logger.getGlobal();
 
-	private static final String AUTH_CODE = "CONFIG.SERVER.AUTH.CODE";
+	private static final String AUTH_CODE = "cloud.config.service.auth.code";
 
-	private static String authCode = refresh();
+	 
+	@Autowired
+    private Environment env;
 
+    
 	@RequestMapping("/")
 	public String version() {
 		return "Cloud Config Service V1.0, released on June 2017!";
@@ -34,13 +39,16 @@ public class Application {
 
 	@RequestMapping("/refresh")
 	public String refreshApp() {
-		Application.refresh();
+		
 		return "Refreshed.";
 	}
 
-	private static String refresh() {
+	private String getAuthCode() {
 
-		authCode = System.getProperty(AUTH_CODE, null);
+		String authCode = env.getProperty(AUTH_CODE);
+		
+		if(authCode==null)
+			authCode=System.getProperty(AUTH_CODE, null);
 
 		if (authCode == null) {
 			logger.warning("Property:[" + AUTH_CODE + "] of Config Service is not set.");
@@ -61,6 +69,7 @@ public class Application {
 		return "Health check ok";
 	}
 
+	
 	@RequestMapping("/GetConfigFile")
 	public void getFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -73,6 +82,8 @@ public class Application {
 
 		logger.info("A request from:" + request.getRemoteAddr() + " to get file:" + configFile);
 
+		String authCode=getAuthCode();
+		
 		if (authCode != null && !authCode.equals(reqAuthCode)) {
 			throw new IOException("Invalide Auth code:" + reqAuthCode);
 		}

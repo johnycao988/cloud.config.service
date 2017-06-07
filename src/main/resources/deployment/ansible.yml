@@ -2,8 +2,6 @@
 - hosts: webservers
   remote_user: jenkins
   tasks:
-  - name: Fetch App config files ...
-    shell: cd /AppConfig && git fetch && git merge origin/master
      
   - name: Remove Cloud config service container ...
     shell: docker rm -f cloud.config.service
