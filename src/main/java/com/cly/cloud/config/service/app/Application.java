@@ -21,7 +21,7 @@ public class Application {
 
 	private static Logger logger = Logger.getGlobal();
 
-	private static final String AUTH_CODE = "cloud.config.service.auth.code";
+	private static final String AUTH_CODE = "CLOUD.CONFIG.SERVICE.AUTH.CODE";
 
 	 
 	@Autowired
