@@ -25,6 +25,6 @@
     shell: cd /home/jenkins/cloud.config.service.tmp && docker build -t cloud.config.service .
   
   - name: Run Cloud config service containers...
-    shell: docker run -d -v /AppConfig/test:/AppConfig/test --name cloud.config.service -p 3080:3080 -e CLOUD.CONFIG.SERVICE.AUTH.CODE=config.auth.code:001 -e SERVICE_NAME=cloud.config.service -e SERVICE_TAGS=test cloud.config.service
+    shell: docker run -d -v /AppConfig/test:/AppConfig/test --name cloud.config.service -p 3080:3080 -e CLOUD.CONFIG.SERVICE.AUTH.CODE=config.auth.code:001 -e SERVICE_NAME=cloud.config.service -e SERVICE_TAGS=test --restart=always cloud.config.service
 
  
