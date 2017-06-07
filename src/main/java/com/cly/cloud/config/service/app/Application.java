@@ -23,6 +23,11 @@ public class Application {
 
 	private static final String AUTH_CODE = "CLOUD.CONFIG.SERVICE.AUTH.CODE";
 
+	 
+	@Autowired
+    private Environment env;
+
+    
 	@RequestMapping("/")
 	public String version() {
 		return "Cloud Config Service V1.0, released on June 2017!";
@@ -41,7 +46,10 @@ public class Application {
 
 	private String getAuthCode() {
 
- 		String authCode=System.getProperty(AUTH_CODE, null);
+		String authCode = env.getProperty(AUTH_CODE);
+		
+		if(authCode==null)
+			authCode=System.getProperty(AUTH_CODE, null);
 
 		if (authCode == null) {
 			logger.warning("Property:[" + AUTH_CODE + "] of Config Service is not set.");
