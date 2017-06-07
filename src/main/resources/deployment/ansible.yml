@@ -14,6 +14,9 @@
   - name: Copy Cloud config service jar ...
     copy: src=cloud.config.service-1.0.jar dest=/tmp
   
+  - name: Copy Cloud config service Dockerfile ...
+    copy: src=Dockerfile dest=/tmp
+  
   - name: Build Cloud config service image ...
     shell: docker build -t cloud.config.service /tmp
   
