@@ -6,7 +6,11 @@
   - name: Remove Cloud config service container ...
     shell: docker rm -f cloud.config.service
     ignore_errors: yes
-    
+
+  - name: Remove Cloud config service image ...
+    shell: docker rmi -f 10.39.101.226:5000/cloud.config.service
+    ignore_errors: yes
+ 
   - name: Pull Cloud config service image ...
     shell: docker pull 10.39.101.226:5000/cloud.config.service
 
