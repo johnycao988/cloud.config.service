@@ -67,7 +67,7 @@ public class Application {
 
 	@RequestMapping("/health")
 	public String health() {
-		return "Health check ok";
+		return "{\"status\":\"UP\"}";
 	}
 
 	
