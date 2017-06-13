@@ -97,6 +97,8 @@ public class Application {
 
 		try {
 
+			logger.info("Start to get file***"+configFile+"***");
+			
 			try (FileInputStream fileInput = new FileInputStream(configFile);
 					OutputStream out = response.getOutputStream()) {
 
